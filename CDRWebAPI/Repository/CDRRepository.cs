@@ -46,10 +46,10 @@ public class CDRRepository : ICDRRepository
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation and containing the average call cost.</returns>
-    public Task<decimal> GetAverageCallCostAsync(CancellationToken cancellationToken = default)
+    public async Task<decimal?> GetAverageCallCostAsync(CancellationToken cancellationToken = default)
     {
-        var query = _context.CDRs.AverageAsync(c => c.Cost, cancellationToken);
-        return query;
+        var averageCost = await _context.CDRs.AverageAsync(c => (decimal?)c.Cost, cancellationToken);
+        return averageCost;
     }
 
     /// <summary>
@@ -58,7 +58,7 @@ public class CDRRepository : ICDRRepository
     /// <param name="top">The number of longest calls to retrieve.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation and containing the longest calls.</returns>
-    public Task<List<CDR>> GetLongestCallsAsync(int top, CancellationToken cancellationToken = default)
+    public Task<List<CDR>?> GetLongestCallsAsync(int top, CancellationToken cancellationToken = default)
     {
         var query = _context.CDRs.OrderByDescending(c => c.Duration).Take(top).ToListAsync(cancellationToken);
         return query;
@@ -90,9 +90,9 @@ public class CDRRepository : ICDRRepository
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation and containing the total call cost.</returns>
-    public Task<decimal> GetTotalCallCostAsync(CancellationToken cancellationToken = default)
+    public Task<decimal?> GetTotalCallCostAsync(CancellationToken cancellationToken = default)
     {
-        var query = _context.CDRs.SumAsync(c => c.Cost, cancellationToken);
+        var query = _context.CDRs.SumAsync(c => (decimal?)c.Cost, cancellationToken);
         return query;
     }
 
@@ -101,10 +101,10 @@ public class CDRRepository : ICDRRepository
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation and containing the total number of calls.</returns>
-    public Task<int> GetTotalNumberOfCallsAsync(CancellationToken cancellationToken = default)
+    public async Task<int?> GetTotalNumberOfCallsAsync(CancellationToken cancellationToken = default)
     {
-        var query = _context.CDRs.CountAsync(cancellationToken);
-        return query;
+        var totalNumberOfCalls = await _context.CDRs.CountAsync(cancellationToken);
+        return totalNumberOfCalls;
     }
 
     /// <summary>
@@ -112,7 +112,7 @@ public class CDRRepository : ICDRRepository
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation and containing the most called number.</returns>
-    public Task<string> GetMostCalledNumberAsync(CancellationToken cancellationToken = default)
+    public Task<string?> GetMostCalledNumberAsync(CancellationToken cancellationToken = default)
     {
         var query = _context.CDRs
             .GroupBy(c => c.Recipient)
@@ -124,7 +124,7 @@ public class CDRRepository : ICDRRepository
     }
 
     /// <summary>
-    /// Retrieves the most active caller asynchronously.
+    /// Retrieves the most active caller asynchronously "CallerId".
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation and containing the most active caller.</returns>
@@ -144,9 +144,9 @@ public class CDRRepository : ICDRRepository
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation and containing the minimum call cost.</returns>
-    public Task<decimal> GetMinCallCostAsync(CancellationToken cancellationToken = default)
+    public Task<decimal?> GetMinCallCostAsync(CancellationToken cancellationToken = default)
     {
-        var query = _context.CDRs.MinAsync(c => c.Cost, cancellationToken);
+        var query = _context.CDRs.MinAsync(c => (decimal?)c.Cost, cancellationToken);
         return query;
     }
 
@@ -155,18 +155,18 @@ public class CDRRepository : ICDRRepository
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation and containing the maximum call cost.</returns>
-    public Task<decimal> GetMaxCallCostAsync(CancellationToken cancellationToken = default)
+    public Task<decimal?> GetMaxCallCostAsync(CancellationToken cancellationToken = default)
     {
-        var query = _context.CDRs.MaxAsync(c => c.Cost, cancellationToken);
+        var query = _context.CDRs.MaxAsync(c => (decimal?)c.Cost, cancellationToken);
         return query;
     }
 
     /// <summary>
-    /// Retrieves the most frequently called number asynchronously.
+    /// Retrieves the most frequently called number asynchronously "Recipient".
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation and containing the most frequently called number.</returns>
-    public async Task<string> GetFrequentCalledNumberAsync(CancellationToken cancellationToken = default)
+    public async Task<string?> GetFrequentCalledNumberAsync(CancellationToken cancellationToken = default)
     {
         var query = await _context.CDRs
             .GroupBy(c => c.Recipient)
@@ -183,12 +183,13 @@ public class CDRRepository : ICDRRepository
     /// <param name="callerId">The caller ID.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation and containing the total call duration.</returns>
-    public Task<int> GetTotalCallDurationAsync(string callerId, CancellationToken cancellationToken = default)
+    public async Task<int?> GetTotalCallDurationAsync(string callerId, CancellationToken cancellationToken = default)
     {
-        var query = _context.CDRs
+        var totalCallDuration = await _context.CDRs
             .Where(c => c.CallerId == callerId)
-            .SumAsync(c => c.Duration, cancellationToken);
+            .SumAsync(c => (int?)c.Duration, cancellationToken);
 
-        return query;
+        return totalCallDuration;
     }
+
 }

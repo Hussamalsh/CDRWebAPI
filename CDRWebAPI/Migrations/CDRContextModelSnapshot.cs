@@ -22,7 +22,7 @@ namespace CDRWebAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("CDRWebAPI.CDR", b =>
+            modelBuilder.Entity("CDRWebAPI.Models.CDR", b =>
                 {
                     b.Property<string>("Reference")
                         .HasColumnType("nvarchar(450)");
@@ -45,8 +45,8 @@ namespace CDRWebAPI.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
 
                     b.Property<string>("Recipient")
                         .IsRequired()

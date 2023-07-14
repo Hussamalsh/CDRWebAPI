@@ -70,8 +70,7 @@ public class CDRApiController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error occurred while uploading file");
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error occurred while uploading file");
+            return LogAndReturnInternalServerError(ex, "Error occurred while uploading file");
         }
     }
 
@@ -82,16 +81,11 @@ public class CDRApiController : ControllerBase
     [HttpGet("AverageCallCost")]
     public async Task<IActionResult> GetAverageCallCost()
     {
-        try
+        return await ExecuteAndHandleRequestAsync(async () =>
         {
             var averageCost = await _cdrService.GetAverageCallCostAsync();
-            return Ok(new { averageCost });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error occurred while fetching average call cost");
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error occurred while fetching average call cost");
-        }
+            return averageCost;
+        }, "Error occurred while fetching average call cost");
     }
 
     /// <summary>
@@ -102,23 +96,16 @@ public class CDRApiController : ControllerBase
     [HttpGet("LongestCalls")]
     public async Task<IActionResult> GetLongestCalls([FromQuery] int top = 10)
     {
-        if (top < 1)
+        if (top < 1) 
         {
             _logger.LogWarning("Invalid number of longest calls requested: {top}", top);
-            return BadRequest("Invalid number of longest calls requested");
-        }
-
-        try
-        {
-            var longestCalls = await _cdrService.GetLongestCallsAsync(top);
-            return Ok(longestCalls);
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error occurred while fetching longest calls");
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error occurred while fetching longest calls");
-        }
+           return BadRequest("Invalid number of longest calls requested");
+        } 
+        
+        return await ExecuteAndHandleRequestAsync(async () => 
+                                    await _cdrService.GetLongestCallsAsync(top),"Error occurred while fetching longest calls");
     }
+
 
     /// <summary>
     /// Retrieves the average number of calls within a specified date range.
@@ -135,16 +122,9 @@ public class CDRApiController : ControllerBase
             return BadRequest("Invalid date range");
         }
 
-        try
-        {
-            var averageCalls = await _cdrService.GetAverageNumberOfCallsAsync(startDate, endDate);
-            return Ok(new { averageCalls });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error occurred while fetching average number of calls");
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error occurred while fetching average number of calls");
-        }
+        return await ExecuteAndHandleRequestAsync(
+            () => _cdrService.GetAverageNumberOfCallsAsync(startDate, endDate),
+            "Error occurred while fetching average number of calls");
     }
 
     /// <summary>
@@ -154,16 +134,9 @@ public class CDRApiController : ControllerBase
     [HttpGet("MaxCallCost")]
     public async Task<IActionResult> GetMaxCallCost()
     {
-        try
-        {
-            var maxCost = await _cdrService.GetMaxCallCostAsync();
-            return Ok(new { maxCost });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error occurred while fetching max call cost");
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error occurred while fetching max call cost");
-        }
+        return await ExecuteAndHandleRequestAsync(
+            () => _cdrService.GetMaxCallCostAsync(),
+            "Error occurred while fetching max call cost");
     }
 
     /// <summary>
@@ -173,16 +146,9 @@ public class CDRApiController : ControllerBase
     [HttpGet("MinCallCost")]
     public async Task<IActionResult> GetMinCallCost()
     {
-        try
-        {
-            var minCost = await _cdrService.GetMinCallCostAsync();
-            return Ok(new { minCost });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error occurred while fetching min call cost");
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error occurred while fetching min call cost");
-        }
+        return await ExecuteAndHandleRequestAsync(
+            () => _cdrService.GetMinCallCostAsync(),
+            "Error occurred while fetching min call cost");
     }
 
     /// <summary>
@@ -192,16 +158,9 @@ public class CDRApiController : ControllerBase
     [HttpGet("FrequentCalledNumber")]
     public async Task<IActionResult> GetFrequentCalledNumber()
     {
-        try
-        {
-            var frequentNumber = await _cdrService.GetFrequentCalledNumberAsync();
-            return Ok(new { frequentNumber });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error occurred while fetching frequent called number");
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error occurred while fetching frequent called number");
-        }
+        return await ExecuteAndHandleRequestAsync(
+            () => _cdrService.GetFrequentCalledNumberAsync(),
+            "Error occurred while fetching frequent called number");
     }
 
     /// <summary>
@@ -212,16 +171,9 @@ public class CDRApiController : ControllerBase
     [HttpGet("TotalCallDuration/{callerId}")]
     public async Task<IActionResult> GetTotalCallDuration(string callerId)
     {
-        try
-        {
-            var totalDuration = await _cdrService.GetTotalCallDurationAsync(callerId);
-            return Ok(new { totalDuration });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error occurred while fetching total call duration for callerId {callerId}", callerId);
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error occurred while fetching total call duration");
-        }
+        return await ExecuteAndHandleRequestAsync(
+            () => _cdrService.GetTotalCallDurationAsync(callerId),
+            $"Error occurred while fetching total call duration for callerId: {callerId}");
     }
 
     /// <summary>
@@ -231,16 +183,9 @@ public class CDRApiController : ControllerBase
     [HttpGet("MostCalledNumber")]
     public async Task<IActionResult> GetMostCalledNumber()
     {
-        try
-        {
-            var mostCalledNumber = await _cdrService.GetMostCalledNumberAsync();
-            return Ok(new { mostCalledNumber });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error occurred while fetching the most called number");
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error occurred while fetching the most called number");
-        }
+        return await ExecuteAndHandleRequestAsync(
+            () => _cdrService.GetMostCalledNumberAsync(),
+            "Error occurred while fetching most called number");
     }
 
     /// <summary>
@@ -250,15 +195,32 @@ public class CDRApiController : ControllerBase
     [HttpGet("MostActiveCaller")]
     public async Task<IActionResult> GetMostActiveCaller()
     {
+        return await ExecuteAndHandleRequestAsync(
+            () => _cdrService.GetMostActiveCallerAsync(),
+            "Error occurred while fetching most active caller");
+    }
+
+    private async Task<IActionResult> ExecuteAndHandleRequestAsync<T>(Func<Task<T>> action, string errorMessage)
+    {
         try
         {
-            var mostActiveCaller = await _cdrService.GetMostActiveCallerAsync();
-            return Ok(new { mostActiveCaller });
+            var result = await action();
+
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error occurred while fetching the most active caller");
-            return StatusCode(StatusCodes.Status500InternalServerError, "Error occurred while fetching the most active caller");
+            return LogAndReturnInternalServerError(ex, errorMessage);
         }
+    }
+
+
+    private IActionResult LogAndReturnInternalServerError(Exception ex, string message)
+    {
+        _logger.LogError(ex, message);
+        return StatusCode(StatusCodes.Status500InternalServerError, message);
     }
 }

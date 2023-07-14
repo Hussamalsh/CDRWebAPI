@@ -38,7 +38,7 @@ public class CDRService : ICDRService
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation and containing the average call cost.</returns>
-    public Task<decimal> GetAverageCallCostAsync(CancellationToken cancellationToken = default)
+    public Task<decimal?> GetAverageCallCostAsync(CancellationToken cancellationToken = default)
     {
         return _repository.GetAverageCallCostAsync(cancellationToken);
     }
@@ -71,7 +71,7 @@ public class CDRService : ICDRService
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation and containing the total call cost.</returns>
-    public Task<decimal> GetTotalCallCostAsync(CancellationToken cancellationToken = default)
+    public Task<decimal?> GetTotalCallCostAsync(CancellationToken cancellationToken = default)
     {
         return _repository.GetTotalCallCostAsync(cancellationToken);
     }
@@ -81,7 +81,7 @@ public class CDRService : ICDRService
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation and containing the total number of calls.</returns>
-    public Task<int> GetTotalNumberOfCallsAsync(CancellationToken cancellationToken = default)
+    public Task<int?> GetTotalNumberOfCallsAsync(CancellationToken cancellationToken = default)
     {
         return _repository.GetTotalNumberOfCallsAsync(cancellationToken);
     }
@@ -91,7 +91,7 @@ public class CDRService : ICDRService
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation and containing the most called number.</returns>
-    public Task<string> GetMostCalledNumberAsync(CancellationToken cancellationToken = default)
+    public Task<string?> GetMostCalledNumberAsync(CancellationToken cancellationToken = default)
     {
         return _repository.GetMostCalledNumberAsync(cancellationToken);
     }
@@ -111,7 +111,7 @@ public class CDRService : ICDRService
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation and containing the minimum call cost.</returns>
-    public Task<decimal> GetMinCallCostAsync(CancellationToken cancellationToken = default)
+    public Task<decimal?> GetMinCallCostAsync(CancellationToken cancellationToken = default)
     {
         return _repository.GetMinCallCostAsync(cancellationToken);
     }
@@ -121,7 +121,7 @@ public class CDRService : ICDRService
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation and containing the maximum call cost.</returns>
-    public Task<decimal> GetMaxCallCostAsync(CancellationToken cancellationToken = default)
+    public Task<decimal?> GetMaxCallCostAsync(CancellationToken cancellationToken = default)
     {
         return _repository.GetMaxCallCostAsync(cancellationToken);
     }
@@ -131,7 +131,7 @@ public class CDRService : ICDRService
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation and containing the most frequent called number.</returns>
-    public Task<string> GetFrequentCalledNumberAsync(CancellationToken cancellationToken = default)
+    public Task<string?> GetFrequentCalledNumberAsync(CancellationToken cancellationToken = default)
     {
         return _repository.GetFrequentCalledNumberAsync(cancellationToken);
     }
@@ -142,7 +142,7 @@ public class CDRService : ICDRService
     /// <param name="callerId">The caller ID.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the asynchronous operation and containing the total call duration.</returns>
-    public Task<int> GetTotalCallDurationAsync(string callerId, CancellationToken cancellationToken = default)
+    public Task<int?> GetTotalCallDurationAsync(string callerId, CancellationToken cancellationToken = default)
     {
         return _repository.GetTotalCallDurationAsync(callerId, cancellationToken);
     }
