@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CDRWebAPI", "CDRWebAPI\CDRWebAPI.csproj", "{7AAB5F72-6D1C-406F-9A98-6EB6692183EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CDRWebAPI.Tests", "CDRWebAPI.Tests\CDRWebAPI.Tests.csproj", "{CE7F08CF-0492-499B-8DF8-015536232BA0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7AAB5F72-6D1C-406F-9A98-6EB6692183EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AAB5F72-6D1C-406F-9A98-6EB6692183EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AAB5F72-6D1C-406F-9A98-6EB6692183EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AAB5F72-6D1C-406F-9A98-6EB6692183EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE7F08CF-0492-499B-8DF8-015536232BA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE7F08CF-0492-499B-8DF8-015536232BA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE7F08CF-0492-499B-8DF8-015536232BA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE7F08CF-0492-499B-8DF8-015536232BA0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AA63476B-1922-4FF4-9939-6CF382C1F2ED}
+	EndGlobalSection
+EndGlobal
